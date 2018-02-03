@@ -73,4 +73,11 @@ namespace animate_export
             frames = _frames;
         }
     }
+
+    class AnimationExport
+    {
+        public List<string> bitmaps { get; set; }
+        public int frame_max { get; set; }
+        public List<List<List<int>>> frames { get; set; }
+    }
 }
