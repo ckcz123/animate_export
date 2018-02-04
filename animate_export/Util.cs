@@ -90,9 +90,9 @@ namespace animate_export
             return nColor;
         }
 
-        public static string compressPng(Bitmap bitmap)
+        public static string compressPng(Bitmap bitmap, int ratio)
         {
-            Bitmap map=new Bitmap(bitmap.Width/2, bitmap.Height/2);
+            Bitmap map=new Bitmap(bitmap.Width/ratio, bitmap.Height/ratio);
 
             Graphics graphics=Graphics.FromImage(map);
             graphics.DrawImage(bitmap, 0, 0, map.Width, map.Height);

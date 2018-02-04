@@ -19,6 +19,9 @@ namespace animate_export
 {
     public partial class Form1 : Form
     {
+
+        private const int ratio = 3;
+
         private int page;
         private string openDirectory;
         private string directory, file;
@@ -402,10 +405,9 @@ namespace animate_export
             Animation animation = animations[id];
 
             AnimationExport animationExport=new AnimationExport();
+            animationExport.ratio = ratio;
             animationExport.frame_max = animation.frame_max;
             animationExport.frames=new List<List<List<int>>>();
-
-            int len = 0;
 
             foreach (var animationFrame in animation.frames)
             {
@@ -416,8 +418,7 @@ namespace animate_export
                     if (type < 0) continue;
                     if ("".Equals(list[type])) // compress png
                     {
-                        list[type] = Util.compressPng(bitmaps[type]);
-                        len += list[type].Length;
+                        list[type] = Util.compressPng(bitmaps[type], ratio);
                     }
                     List<int> info=new List<int>();
                     info.Add(type); // 0-index
@@ -431,8 +432,6 @@ namespace animate_export
             }
 
             animationExport.bitmaps = list;
-
-            Console.WriteLine("Length: "+len);
 
             return JsonConvert.SerializeObject(animationExport);
 
