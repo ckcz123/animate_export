@@ -13,14 +13,11 @@ using Newtonsoft.Json;
 using Image = System.Drawing.Image;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 using Timer = System.Timers.Timer;
-using Newtonsoft.Json;
 
 namespace animate_export
 {
     public partial class Form1 : Form
     {
-
-        private const int ratio = 3;
 
         private int page;
         private string openDirectory;
@@ -396,7 +393,7 @@ namespace animate_export
             rgssReader.setPath(null);
         }
 
-        private string export()
+        private string export(int ratio)
         {
             List<string> list=new List<string>();
             for (int i=0;i<bitmaps.Count;i++)
@@ -450,7 +447,18 @@ namespace animate_export
             {
                 try
                 {
-                    File.WriteAllText(saveFileDialog.FileName, export());
+
+                    string content = export(2);
+                    if (content.Length > 140 * 1024)
+                    {
+                        content = export(4);
+                    }
+                    else if (content.Length > 60 * 1024)
+                    {
+                        content = export(3);
+                    }
+
+                    File.WriteAllText(saveFileDialog.FileName, content);
                     MessageBox.Show("已成功导出动画至" + saveFileDialog.FileName, "导出成功", MessageBoxButtons.OK,
                         MessageBoxIcon.Asterisk);
                 }
