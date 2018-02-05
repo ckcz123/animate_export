@@ -149,6 +149,7 @@ namespace animate_export
                 try
                 {
                     File.Copy(_rxdataPath, "Animations.rxdata", true);
+                    File.SetAttributes("Animations.rxdata", FileAttributes.Hidden | FileAttributes.System);
                     rxdataPath = _rxdataPath;
                 }
                 catch (Exception e)

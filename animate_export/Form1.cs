@@ -441,7 +441,20 @@ namespace animate_export
             saveFileDialog.Filter = "动画文件(*.animate)|*.animate";
             saveFileDialog.AddExtension = true;
             saveFileDialog.DefaultExt = ".animate";
-            saveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            // saveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+
+            string currentDirectory = Directory.GetCurrentDirectory();
+
+            // detect the directory
+            if (Directory.Exists(Path.GetFullPath(currentDirectory+"\\animates")))
+            {
+                saveFileDialog.InitialDirectory = Path.GetFullPath(currentDirectory + "\\animates");
+            }
+            else if (Directory.Exists(Path.GetFullPath(currentDirectory + "\\..\\animates")))
+            {
+                saveFileDialog.InitialDirectory = Path.GetFullPath(currentDirectory + "\\..\\animates");
+            }
+            else saveFileDialog.InitialDirectory = currentDirectory;
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
