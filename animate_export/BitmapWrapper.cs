@@ -32,6 +32,11 @@ namespace animate_export
             bmp.UnlockBits(bmpData);
             return bmp;
         }
+
+        public void SetPixel(int x, int y, Color color)
+        {
+            SetPixel(new Point(x,y), color);
+        }
         public void SetPixel(Point point, Color color)
         {
             int offset = point.X * byteCount + point.Y * bmpData.Stride;
@@ -40,6 +45,11 @@ namespace animate_export
             scan0[offset + 2] = color.R;
             if (byteCount == 4)
                 scan0[offset + 3] = color.A;
+        }
+
+        public Color GetPixel(int x, int y)
+        {
+            return GetPixel(new Point(x,y));
         }
         public Color GetPixel(Point point)
         {

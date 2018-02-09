@@ -27,7 +27,7 @@ namespace animate_export
         private int id, index;
 
         private Bitmap bitmap;
-        private List<Bitmap> bitmaps;
+        private List<Bitmap> bitmaps, bitmap_revs;
 
         private Timer timer;
         private Bitmap canvasMap;
@@ -219,7 +219,7 @@ namespace animate_export
                 {
                     if (reason != null) break;
                     if (frameInfo.angle != 0) reason = "不支持带旋转角度的帧！";
-                    if (frameInfo.mirror) reason = "不支持带翻转的帧";
+                    // if (frameInfo.mirror) reason = "不支持带翻转的帧";
                     // if (frameInfo.blend != 1) reason = "只支持合成方式：加法！";
                 }
             }
@@ -253,6 +253,12 @@ namespace animate_export
                 bitmaps.ForEach(x => x.Dispose());
                 bitmaps.Clear();
             }
+            if (bitmap_revs == null) bitmap_revs = new List<Bitmap>();
+            else
+            {
+                bitmap_revs.ForEach(x => x.Dispose());
+                bitmap_revs.Clear();
+            }
 
             int hue = animation.animation_hue;
 
@@ -266,17 +272,26 @@ namespace animate_export
                     Bitmap map = new Bitmap(192, 192);
                     BitmapWrapper mapWrapper = new BitmapWrapper(map);
 
+                    Bitmap map_rev = new Bitmap(192, 192);
+                    BitmapWrapper mapWrapper_rev = new BitmapWrapper(map_rev);
+
                     for (int u = 0; u < 192; u++)
                     {
                         for (int v = 0; v < 192; v++)
                         {
-                            mapWrapper.SetPixel(new Point(u,v), Util.addHue(bitmapWrapper.GetPixel(new Point(192*x+u, 192*y+v)), hue));
+                            Color color = Util.addHue(bitmapWrapper.GetPixel(192 * x + u, 192 * y + v), hue);
+                            mapWrapper.SetPixel(u,v,color);
+                            mapWrapper_rev.SetPixel(191-u,v,color);
+                            //mapWrapper.SetPixel(new Point(u,v), Util.addHue(bitmapWrapper.GetPixel(new Point(192*x+u, 192*y+v)), hue));
                             // map.SetPixel(u, v, Util.addHue(bitmap.GetPixel(192 * x + u, 192 * y + v), hue));
+
                         }
                     }
                     mapWrapper.UnWrapper();
+                    mapWrapper_rev.UnWrapper();
 
                     bitmaps.Add(map);
+                    bitmap_revs.Add(map_rev);
                 }
             }
 
@@ -323,7 +338,7 @@ namespace animate_export
                 matrix.Matrix33 = frameInfo.opacity / 255f;
                 attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                graphics.DrawImage(bitmaps[frameInfo.type], new Rectangle(centerX - width / 2, centerY - width / 2, width, width), 0, 0, 192, 192, GraphicsUnit.Pixel, attributes);
+                graphics.DrawImage(frameInfo.mirror?bitmap_revs[frameInfo.type]:bitmaps[frameInfo.type], new Rectangle(centerX - width / 2, centerY - width / 2, width, width), 0, 0, 192, 192, GraphicsUnit.Pixel, attributes);
                 
             }
 
@@ -423,6 +438,7 @@ namespace animate_export
                     info.Add(frameInfo.ypos+16*(animation.position-1)); // 2-ypos
                     info.Add(frameInfo.zoom); // 3-zoom
                     info.Add(frameInfo.opacity); // 4-opacity
+                    info.Add(frameInfo.mirror?1:0); // 5-mirror
                     frame.Add(info);
                 }
                 animationExport.frames.Add(frame);
