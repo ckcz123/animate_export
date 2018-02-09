@@ -212,13 +212,14 @@ namespace animate_export
             }
 
             // 检查是否存在“旋转角度”、“左右翻转”、“合成方式”
+            /*
             string reason = null;
             foreach (var animationFrame in animation.frames)
             {
                 foreach (var frameInfo in animationFrame.cell_data)
                 {
                     if (reason != null) break;
-                    if (frameInfo.angle != 0) reason = "不支持带旋转角度的帧！";
+                    // if (frameInfo.angle != 0) reason = "不支持带旋转角度的帧！";
                     // if (frameInfo.mirror) reason = "不支持带翻转的帧";
                     // if (frameInfo.blend != 1) reason = "只支持合成方式：加法！";
                 }
@@ -228,6 +229,7 @@ namespace animate_export
                 MessageBox.Show(reason, "错误", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return false;
             }
+             * */
 
             // bitmap = new Bitmap(pngPath);
             Bitmap _bitmap = (Bitmap)Image.FromFile(pngPath);
@@ -338,8 +340,18 @@ namespace animate_export
                 matrix.Matrix33 = frameInfo.opacity / 255f;
                 attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                graphics.DrawImage(frameInfo.mirror?bitmap_revs[frameInfo.type]:bitmaps[frameInfo.type], new Rectangle(centerX - width / 2, centerY - width / 2, width, width), 0, 0, 192, 192, GraphicsUnit.Pixel, attributes);
-                
+                var image = frameInfo.mirror ? bitmap_revs[frameInfo.type] : bitmaps[frameInfo.type];
+
+                var angle = frameInfo.angle;
+                if (angle > 0)
+                {
+                    graphics.TranslateTransform(centerX, centerY);
+                    graphics.RotateTransform(360-angle);
+                    graphics.TranslateTransform(-centerX,-centerY);
+                }
+                graphics.DrawImage(image, new Rectangle(centerX - width / 2, centerY - width / 2, width, width), 0, 0, 192, 192, GraphicsUnit.Pixel, attributes);
+                graphics.ResetTransform();
+
             }
 
             canvas.Image = canvasMap;
@@ -439,6 +451,7 @@ namespace animate_export
                     info.Add(frameInfo.zoom); // 3-zoom
                     info.Add(frameInfo.opacity); // 4-opacity
                     info.Add(frameInfo.mirror?1:0); // 5-mirror
+                    info.Add(frameInfo.angle); // 6-angle
                     frame.Add(info);
                 }
                 animationExport.frames.Add(frame);
