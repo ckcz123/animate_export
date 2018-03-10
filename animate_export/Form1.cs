@@ -474,16 +474,17 @@ namespace animate_export
 
             string currentDirectory = Directory.GetCurrentDirectory();
 
-            // detect the directory
-            if (Directory.Exists(Path.GetFullPath(currentDirectory+"\\animates")))
+            string[] possibleDir = {".", "..", "project", "..\\project"};
+
+            saveFileDialog.InitialDirectory = currentDirectory;
+            foreach (string s in possibleDir)
             {
-                saveFileDialog.InitialDirectory = Path.GetFullPath(currentDirectory + "\\animates");
+                if (Directory.Exists(Path.GetFullPath(currentDirectory + "\\" + s + "\\animates")))
+                {
+                    saveFileDialog.InitialDirectory = Path.GetFullPath(currentDirectory + "\\" + s + "\\animates");
+                    break;
+                }
             }
-            else if (Directory.Exists(Path.GetFullPath(currentDirectory + "\\..\\animates")))
-            {
-                saveFileDialog.InitialDirectory = Path.GetFullPath(currentDirectory + "\\..\\animates");
-            }
-            else saveFileDialog.InitialDirectory = currentDirectory;
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
