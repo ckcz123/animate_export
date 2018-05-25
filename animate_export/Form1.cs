@@ -492,13 +492,17 @@ namespace animate_export
                 {
 
                     string content = export(2);
-                    if (content.Length > 140 * 1024)
+                    if (content.Length > 250 * 1024)
                     {
                         content = export(4);
                     }
-                    else if (content.Length > 60 * 1024)
+                    else if (content.Length > 120 * 1024)
                     {
                         content = export(3);
+                    }
+                    else if (content.Length < 40 * 1024)
+                    {
+                        content = export(1);
                     }
 
                     File.WriteAllText(saveFileDialog.FileName, content);
