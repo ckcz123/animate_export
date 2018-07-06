@@ -389,11 +389,24 @@ namespace animate_export
             }
             else if (page == 3)
             {
+                Animation animation = animations[id];
+                string se = animation.se;
+                if (se.Length == 0)
+                {
+                    checkBox1.Checked = false;
+                    textBox1.Text = "";
+                    textBox1.Enabled = false;
+                }
+                else
+                {
+                    checkBox1.Checked = true;
+                    if (!se.Contains("."))
+                        se = se + ".ogg";
+                    textBox1.Text = se;
+                    textBox1.Enabled = true;
+                }
                 showStep4();
             }
-
-
-
         }
 
         private void prevButton_Click(object sender, EventArgs e)
@@ -432,6 +445,7 @@ namespace animate_export
             animationExport.ratio = ratio;
             animationExport.frame_max = animation.frame_max;
             animationExport.frames=new List<List<List<int>>>();
+            animationExport.se = checkBox1.Checked ? textBox1.Text : "";
 
             foreach (var animationFrame in animation.frames)
             {
@@ -515,6 +529,11 @@ namespace animate_export
                     MessageBox.Show("保存失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            textBox1.Enabled = checkBox1.Checked;
         }
 
     }

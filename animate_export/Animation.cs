@@ -47,14 +47,14 @@ namespace animate_export
 
         }
 
-
         public int id;
         public string name;
         public string animation_name;
         public int animation_hue;
         public int position;
         public int frame_max;
-
+        public string se;
+        
         public List<Frame> frames;
 
         public Animation(int _id, string _name, string _animationName, int _animationHue, int _position, int _frameMax)
@@ -66,17 +66,24 @@ namespace animate_export
             position = _position;
             frame_max = _frameMax;
             frames = null;
+            se = "";
         }
 
         public void setFrames(List<Frame> _frames)
         {
             frames = _frames;
         }
+
+        public void setSE(string _se)
+        {
+            se = _se;
+        }
     }
 
     class AnimationExport
     {
         public int ratio { get; set; }
+        public string se { get; set; }
         public List<string> bitmaps { get; set; }
         public int frame_max { get; set; }
         public List<List<List<int>>> frames { get; set; }

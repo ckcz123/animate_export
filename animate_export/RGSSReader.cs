@@ -27,6 +27,35 @@ namespace animate_export
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate IntPtr OnAnimationFrameDataDown(IntPtr obj, IntPtr dataString);
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate IntPtr OnAnimationFrameTimingDown(IntPtr obj, IntPtr dataString, uint len);
+
+        public IntPtr onAnimationsInfoDown(IntPtr obj, IntPtr dataString)
+        {
+            IntPtr basePtr = new IntPtr((dataString.ToInt32() - 1) / 2);
+            int length = Marshal.ReadInt32(basePtr);
+            IntPtr datas = new IntPtr(Marshal.ReadInt32(IntPtr.Add(basePtr, 4)));
+
+            animations = new List<Animation>();
+
+            for (int i = 0; i < length; i++)
+            {
+                IntPtr data = new IntPtr(Marshal.ReadInt32(IntPtr.Add(datas, i * 4)));
+                int id = Marshal.ReadInt32(data);
+                if (id == 0) continue;
+                string name = Util.readString(IntPtr.Add(data, 4));
+                string animation_name = Util.readString(IntPtr.Add(data, 8));
+                int animation_hue = Marshal.ReadInt32(IntPtr.Add(data, 12));
+                int position = Marshal.ReadInt32(IntPtr.Add(data, 16));
+                int frame_max = Marshal.ReadInt32(IntPtr.Add(data, 20));
+                // Console.WriteLine("No." + id + ":" + name + "," + animation_name + "," + animation_hue + "," + position + "," + frame_max);
+
+                animations.Add(new Animation(id, name, animation_name, animation_hue, position, frame_max));
+
+            }
+            return new IntPtr(4);
+        }
+
         public IntPtr onAnimationFrameDataDown(IntPtr obj, IntPtr dataString)
         {
 
@@ -71,30 +100,26 @@ namespace animate_export
             return new IntPtr(4);
         }
 
-        public IntPtr onAnimationsInfoDown(IntPtr obj, IntPtr dataString)
+        public IntPtr onAnimationFrameTimingDown(IntPtr obj, IntPtr dataString, uint len)
         {
+            len = (len - 1) / 2;
             IntPtr basePtr = new IntPtr((dataString.ToInt32() - 1) / 2);
-            int length = Marshal.ReadInt32(basePtr);
-            // Console.WriteLine("Length: " + length);
-            IntPtr datas = new IntPtr(Marshal.ReadInt32(IntPtr.Add(basePtr, 4)));
+            string se = "";
 
-            animations = new List<Animation>();
-
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < len; i++)
             {
-                IntPtr data = new IntPtr(Marshal.ReadInt32(IntPtr.Add(datas, i * 4)));
-                int id = Marshal.ReadInt32(data);
-                if (id == 0) continue;
+                IntPtr data = new IntPtr(Marshal.ReadInt32(IntPtr.Add(basePtr, i * 4)));
                 string name = Util.readString(IntPtr.Add(data, 4));
-                string animation_name = Util.readString(IntPtr.Add(data, 8));
-                int animation_hue = Marshal.ReadInt32(IntPtr.Add(data, 12));
-                int position = Marshal.ReadInt32(IntPtr.Add(data, 16));
-                int frame_max = Marshal.ReadInt32(IntPtr.Add(data, 20));
-                // Console.WriteLine("No." + id + ":" + name + "," + animation_name + "," + animation_hue + "," + position + "," + frame_max);
-
-                animations.Add(new Animation(id, name, animation_name, animation_hue, position, frame_max));
-
+                // Console.WriteLine("Name: "+name);
+                if (name.Length > 0)
+                {
+                    se = name;
+                    break;
+                }
             }
+
+            animations[id].setSE(se);
+
             return new IntPtr(4);
         }
 
@@ -109,11 +134,13 @@ namespace animate_export
 
         private OnAnimationFrameDataDown dataDown;
         private OnAnimationsInfoDown infoDown;
+        private OnAnimationFrameTimingDown timingDown;
 
         public RGSSReader()
         {
             infoDown = onAnimationsInfoDown;
             dataDown = onAnimationFrameDataDown;
+            timingDown = onAnimationFrameTimingDown;
             rxdataPath = null;
             animations = null;
             id = 0;
@@ -136,6 +163,8 @@ namespace animate_export
                 Marshal.GetFunctionPointerForDelegate(infoDown), 1);
             rbDefineModuleFunction(fux2, Marshal.StringToCoTaskMemAnsi("sendAnimationFramesData"),
                 Marshal.GetFunctionPointerForDelegate(dataDown), 1);
+            rbDefineModuleFunction(fux2, Marshal.StringToCoTaskMemAnsi("sendAnimationTimingData"), 
+                Marshal.GetFunctionPointerForDelegate(timingDown), 2);
 
             eval = (RGSSEval)dll.Invoke("RGSSEval", typeof(RGSSEval));
 
@@ -193,6 +222,7 @@ namespace animate_export
                 {
                     string code = string.Format(DATA, id+1);
                     eval(Marshal.StringToCoTaskMemAnsi(code));
+                    getSE();
                     return animations[id];
                 }
                 catch (Exception)
@@ -202,6 +232,12 @@ namespace animate_export
 
             }
             return null;
+        }
+
+        private void getSE()
+        {
+            string code = string.Format(TIMING, id + 1);
+            eval(Marshal.StringToCoTaskMemAnsi(code));
         }
 
         private const string INFO = @"
@@ -230,7 +266,18 @@ ptr = [frames].pack(""p"").unpack(""L"")[0]
 Fux2.sendAnimationFramesData(ptr)
 ";
 
+        private const string TIMING = @"
+timings = $ani[{0}].timings.map do |tm|
+    [tm.frame, tm.se.name].pack(""Lp"")
+end
+len = timings.size
+timings = timings.pack(""p*"")
+ptr = [timings].pack(""p"").unpack(""L"")[0]
+Fux2.sendAnimationTimingData(ptr,len)
+";
+
     }
+
 
 
 }

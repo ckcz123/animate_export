@@ -49,11 +49,13 @@
             this.step3 = new System.Windows.Forms.Panel();
             this.canvas = new System.Windows.Forms.PictureBox();
             this.step4 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.step1.SuspendLayout();
             this.step2.SuspendLayout();
             this.step3.SuspendLayout();
@@ -246,9 +248,11 @@
             // 
             // step4
             // 
+            this.step4.Controls.Add(this.textBox1);
+            this.step4.Controls.Add(this.checkBox1);
+            this.step4.Controls.Add(this.label5);
             this.step4.Controls.Add(this.label4);
             this.step4.Controls.Add(this.label3);
-            this.step4.Controls.Add(this.label2);
             this.step4.Controls.Add(this.label1);
             this.step4.Controls.Add(this.exportButton);
             this.step4.Location = new System.Drawing.Point(27, 55);
@@ -256,55 +260,72 @@
             this.step4.Size = new System.Drawing.Size(322, 221);
             this.step4.TabIndex = 4;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(106, 78);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(178, 21);
+            this.textBox1.TabIndex = 0;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Location = new System.Drawing.Point(35, 81);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(72, 16);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "导出音效";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label5.Location = new System.Drawing.Point(19, 158);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(288, 23);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "如导出音效，请将音效文件复制到sounds目录下。";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label4.Location = new System.Drawing.Point(19, 182);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(288, 23);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "具体使用方法详见文档说明。";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label3
+            // 
+            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label3.Location = new System.Drawing.Point(19, 134);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(288, 23);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "在HTML5魔塔样板中引用文件，即可使用动画。";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // label1
             // 
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(55, 111);
+            this.label1.Location = new System.Drawing.Point(19, 111);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(225, 23);
+            this.label1.Size = new System.Drawing.Size(288, 23);
             this.label1.TabIndex = 3;
-            this.label1.Text = "将会导出animate格式的文件，内部包含";
+            this.label1.Text = "将导出animate格式的文件，包含图片和帧数等信息。";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // exportButton
             // 
-            this.exportButton.Location = new System.Drawing.Point(123, 69);
+            this.exportButton.Location = new System.Drawing.Point(123, 39);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(76, 27);
             this.exportButton.TabIndex = 0;
             this.exportButton.Text = "点此导出";
             this.exportButton.UseVisualStyleBackColor = true;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
-            // 
-            // label2
-            // 
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label2.Location = new System.Drawing.Point(55, 130);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(225, 23);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "图片和帧数等信息。";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label3
-            // 
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(55, 152);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(225, 23);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "在HTML5魔塔样板中引用文件，即可使用";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label4
-            // 
-            this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label4.Location = new System.Drawing.Point(55, 172);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(225, 23);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "本动画。详见文档说明。";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form1
             // 
@@ -335,6 +356,7 @@
             this.step3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.step4.ResumeLayout(false);
+            this.step4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -367,7 +389,9 @@
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label5;
 
     }
 }
