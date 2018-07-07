@@ -74,6 +74,7 @@
             // 
             // selectFileLabel
             // 
+            this.selectFileLabel.AutoEllipsis = true;
             this.selectFileLabel.ForeColor = System.Drawing.SystemColors.GrayText;
             this.selectFileLabel.Location = new System.Drawing.Point(3, 111);
             this.selectFileLabel.Name = "selectFileLabel";
