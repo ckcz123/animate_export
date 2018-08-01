@@ -53,9 +53,10 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.sizeLabel = new System.Windows.Forms.Label();
             this.step1.SuspendLayout();
             this.step2.SuspendLayout();
             this.step3.SuspendLayout();
@@ -249,11 +250,12 @@
             // 
             // step4
             // 
+            this.step4.Controls.Add(this.sizeLabel);
+            this.step4.Controls.Add(this.comboBox1);
             this.step4.Controls.Add(this.textBox1);
             this.step4.Controls.Add(this.checkBox1);
             this.step4.Controls.Add(this.label5);
             this.step4.Controls.Add(this.label4);
-            this.step4.Controls.Add(this.label3);
             this.step4.Controls.Add(this.label1);
             this.step4.Controls.Add(this.exportButton);
             this.step4.Location = new System.Drawing.Point(27, 55);
@@ -281,7 +283,7 @@
             // label5
             // 
             this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label5.Location = new System.Drawing.Point(19, 158);
+            this.label5.Location = new System.Drawing.Point(19, 165);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(288, 23);
             this.label5.TabIndex = 7;
@@ -291,27 +293,17 @@
             // label4
             // 
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label4.Location = new System.Drawing.Point(19, 182);
+            this.label4.Location = new System.Drawing.Point(19, 188);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(288, 23);
             this.label4.TabIndex = 6;
-            this.label4.Text = "具体使用方法详见文档说明。";
+            this.label4.Text = "记得在全塔属性中注册才能使用，详见文档说明。";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label3
-            // 
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(19, 134);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(288, 23);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "在HTML5魔塔样板中引用文件，即可使用动画。";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label1
             // 
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(19, 111);
+            this.label1.Location = new System.Drawing.Point(19, 141);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(288, 23);
             this.label1.TabIndex = 3;
@@ -327,6 +319,31 @@
             this.exportButton.Text = "点此导出";
             this.exportButton.UseVisualStyleBackColor = true;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "无压缩",
+            "2倍压缩",
+            "3倍压缩",
+            "4倍压缩"});
+            this.comboBox1.Location = new System.Drawing.Point(70, 111);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(72, 20);
+            this.comboBox1.TabIndex = 8;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // sizeLabel
+            // 
+            this.sizeLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.sizeLabel.Location = new System.Drawing.Point(156, 110);
+            this.sizeLabel.Name = "sizeLabel";
+            this.sizeLabel.Size = new System.Drawing.Size(136, 23);
+            this.sizeLabel.TabIndex = 9;
+            this.sizeLabel.Text = "预计大小：0.0KB";
+            this.sizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form1
             // 
@@ -389,10 +406,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label sizeLabel;
 
     }
 }

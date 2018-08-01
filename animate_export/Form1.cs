@@ -405,6 +405,18 @@ namespace animate_export
                     textBox1.Text = se;
                     textBox1.Enabled = true;
                 }
+
+                string content = export(2);
+                if (content.Length > 250 * 1024)
+                    comboBox1.SelectedIndex = 3;
+                else if (content.Length > 120 * 1024)
+                    comboBox1.SelectedIndex = 2;
+                else if (content.Length < 40 * 1024)
+                    comboBox1.SelectedIndex = 0;
+                else
+                    comboBox1.SelectedIndex = 1;
+                updateSize();
+
                 showStep4();
             }
         }
@@ -505,21 +517,8 @@ namespace animate_export
                 try
                 {
 
-                    string content = export(2);
-                    if (content.Length > 250 * 1024)
-                    {
-                        content = export(4);
-                    }
-                    else if (content.Length > 120 * 1024)
-                    {
-                        content = export(3);
-                    }
-                    else if (content.Length < 40 * 1024)
-                    {
-                        content = export(1);
-                    }
 
-                    File.WriteAllText(saveFileDialog.FileName, content);
+                    File.WriteAllText(saveFileDialog.FileName, export(comboBox1.SelectedIndex+1));
                     MessageBox.Show("已成功导出动画至" + saveFileDialog.FileName, "导出成功", MessageBoxButtons.OK,
                         MessageBoxIcon.Asterisk);
                 }
@@ -534,6 +533,16 @@ namespace animate_export
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             textBox1.Enabled = checkBox1.Checked;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateSize();
+        }
+
+        private void updateSize()
+        {
+            sizeLabel.Text = string.Format("大小：{0:F}KB", export(comboBox1.SelectedIndex+1).Length/1024.0);
         }
 
     }
