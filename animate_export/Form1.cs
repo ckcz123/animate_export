@@ -516,11 +516,38 @@ namespace animate_export
             {
                 try
                 {
-
-
                     File.WriteAllText(saveFileDialog.FileName, export(comboBox1.SelectedIndex+1));
-                    MessageBox.Show("已成功导出动画至" + saveFileDialog.FileName, "导出成功", MessageBoxButtons.OK,
-                        MessageBoxIcon.Asterisk);
+
+                    // 尝试复制音效
+                    if (checkBox1.Checked)
+                    {
+                        string se = textBox1.Text;
+                        string fromSE = Path.GetFullPath(openDirectory + "\\..\\Audio\\SE\\" + se);
+                        string toSE = Path.GetFullPath(Path.GetDirectoryName(saveFileDialog.FileName) +
+                                                    "\\..\\sounds");
+                        if (!File.Exists(fromSE) || !Directory.Exists(toSE))
+                        {
+                            MessageBox.Show("已成功导出动画至" + saveFileDialog.FileName + "。\n"
+                                            + "但是SE文件 " + se + " 没有被成功拷贝，请手动复制到sounds目录下。\n别忘了在全塔属性中注册哦！",
+                                "提示", MessageBoxButtons.OK,
+                                MessageBoxIcon.Asterisk);
+                        }
+                        else
+                        {
+                            File.Copy(fromSE, Path.GetFullPath(toSE + "\\" + se), true);
+                            MessageBox.Show("已成功导出动画至 " + saveFileDialog.FileName + "。\n"
+                                            + "且SE文件 " + se + " 已被拷贝到到sounds目录下。\n" +
+                                            "别忘了在全塔属性中注册哦！",
+                                "导出成功", MessageBoxButtons.OK,
+                                MessageBoxIcon.Asterisk);
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("已成功导出动画至 " + saveFileDialog.FileName + "。\n别忘了在全塔属性中注册哦！", "导出成功", MessageBoxButtons.OK,
+                            MessageBoxIcon.Asterisk);
+                    }
                 }
                 catch (Exception ee)
                 {
