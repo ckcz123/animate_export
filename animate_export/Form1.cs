@@ -244,7 +244,7 @@ namespace animate_export
             if (bitmap != null) bitmap.Dispose();
             bitmap = new Bitmap(_bitmap.Width, _bitmap.Height);
             Graphics graphics = Graphics.FromImage(bitmap);
-            graphics.DrawImage(_bitmap, new Rectangle(0, 0, _bitmap.Width, _bitmap.Height), 0, 0, _bitmap.Width, _bitmap.Height, GraphicsUnit.Pixel);
+            Util.drawImage(graphics, _bitmap);
             graphics.Dispose();
             _bitmap.Dispose();
 
@@ -316,7 +316,7 @@ namespace animate_export
             // 清空graphics
             graphics.Clear(Color.Transparent);
             // 绘制enemy
-            graphics.DrawImage(Resources.enemy, standardX-16, standardY-16);
+            Util.drawImage(graphics, Resources.enemy, standardX-16, standardY-16);
 
             // 进行绘制
             Animation animation = animations[id];
