@@ -401,7 +401,19 @@ namespace animate_export
                 {
                     checkBox1.Checked = true;
                     if (!se.Contains("."))
-                        se = se + ".ogg";
+                    {
+                        string audioPath = Path.GetFullPath(openDirectory + "\\..\\Audio\\SE\\");
+                        if (Directory.Exists(audioPath))
+                        {
+                            string v = Directory.EnumerateFiles(audioPath, se + ".*").FirstOrDefault();
+                            if (v.Length != 0) se = Path.GetFileName(v);
+                            else se += ".ogg";
+                        }
+                        else
+                        {
+                            se += ".ogg";
+                        }
+                    }
                     textBox1.Text = se;
                     textBox1.Enabled = true;
                 }
